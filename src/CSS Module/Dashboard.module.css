@@ -1,0 +1,21 @@
+.background{
+    background-color: #f1cefc;
+}
+.banner{
+    position: relative;
+    width: 60%;
+    height: 30%;
+    left: 275px;
+    top: 50px;
+    border-radius: 10%;
+}
+
+.form{
+    position: relative;
+    display: flex;
+    width: 70%;
+    left: 225px;
+    padding: 5px;
+    bottom: 30px;
+}
+
