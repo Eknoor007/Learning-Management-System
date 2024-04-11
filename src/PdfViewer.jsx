@@ -5,7 +5,6 @@ import pdf from './assets/React-Native-Guide.pdf';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
-// import styles from '../css/pdf.module.css'
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
 
 export default function Pdf() {
