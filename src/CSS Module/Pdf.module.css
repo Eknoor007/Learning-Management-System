@@ -1,0 +1,11 @@
+.pdf {
+    text-align: center;
+    background-color: #c6e4e7;
+    min-height: 120vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px +2vmin);
+    color: rgb(0, 0, 0);
+}

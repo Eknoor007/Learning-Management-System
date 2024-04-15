@@ -25,13 +25,11 @@ export default function Navbar() {
                                 </svg>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Profile</a></li>
-                                <li><a class="dropdown-item" href="#">My Learning</a></li>
-                                <li><a class="dropdown-item" href="#">My Wishlist</a></li>
+                                <li><Link class="dropdown-item" to="#">Profile</Link></li>
+                                <li><Link class="dropdown-item" to="#">My Learning</Link></li>
+                                <li><Link class="dropdown-item" to="#">My Wishlist</Link></li>
                                 <li><hr class="dropdown-divider" /></li>
-                                <Link to="/">
-                                    <li><a class="dropdown-item" href="#">Sign  Out</a></li>
-                                </Link>
+                                    <li><Link class="dropdown-item" to="/">Sign  Out</Link></li>
                             </ul>
                         </Col>
                     </Row>

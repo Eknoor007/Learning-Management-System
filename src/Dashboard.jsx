@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Navbar from './Navbar'
 import Button from 'react-bootstrap/Button';
 import { Card, Form } from 'react-bootstrap';
@@ -15,6 +15,22 @@ import StarRating from './StarRating.jsx';
 import { Link } from 'react-router-dom';
 
 export default function Dashboard() {
+  const [searchTerm, setSearchTerm] = useState('');
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+  };
+  const courses = [
+    { title: "The Ultimate React Native Guide", image: ReactThumbnail },
+    { title: "The Ultimate Mern Stack Mastery Guide", image: MernThumbnail},
+    { title: "The Ultimate React.js Mastery Guide", image: JsThumbnail },
+    { title: "2024 Blockchain Developer", image: WebThumbnail},
+    { title: "2024 Front-End Developer", image: FrontendThumbnail},
+    { title: "2024 Back-End Developer", image: BackendThumbnail},
+  ];
+  const filteredCourses = courses.filter(course =>
+    course.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <>
       <Navbar />
@@ -26,10 +42,9 @@ export default function Dashboard() {
             placeholder="Search the courses"
             className="me-2 p-3"
             aria-label="Search"
+            value={searchTerm}
+            onChange={handleSearch}
           />
-          <Button variant="primary"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
-          </svg></Button>
         </Form>
       </div>
       <center>
@@ -37,11 +52,12 @@ export default function Dashboard() {
       </center>
       <hr></hr>
       <Row>
-        <Col>
+        {filteredCourses.map((courses, index) => (
+          <Col key={index}>
           <Card style={{ width: '20rem', margin: '20px', top: '40px', left: '15px' }}>
-            <Card.Img variant="top" src={ReactThumbnail} />
+            <Card.Img variant="top" src={courses.image} />
             <Card.Body>
-              <Card.Title>The Ultimate React Native Guide</Card.Title>
+              <Card.Title>{courses.title}</Card.Title>
               <Link to={"/content"}>
               <Button variant="primary">Go to the course</Button>
               </Link>
@@ -49,72 +65,7 @@ export default function Dashboard() {
             </Card.Body>
           </Card>
         </Col>
-        <Col>
-          <Card style={{ width: '20rem', margin: '20px', top: '40px', left: '15px' }}>
-            <Card.Img variant="top" src={MernThumbnail} />
-            <Card.Body>
-              <Card.Title>The Ultimate Mern Stack Mastery Guide</Card.Title>
-              <Link to={"/content"}>
-              <Button variant="primary">Go to the course</Button>
-              </Link>
-              <StarRating />
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col>
-          <Card style={{ width: '20rem', margin: '20px', top: '40px', left: '15px' }}>
-            <Card.Img variant="top" src={JsThumbnail} />
-            <Card.Body>
-              <Card.Title>The Ultimate React.js Mastery Guide</Card.Title>
-              <Link to={"/content"}>
-              <Button variant="primary">Go to the course</Button>
-              </Link>
-              <StarRating />
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-      <center>
-        <h1 className='mt-5'> Useful Roadmap Guides</h1>
-      </center>
-      <hr></hr>
-      <Row>
-        <Col>
-          <Card style={{ width: '20rem', margin: '20px', top: '70px', left: '15px' }}>
-            <Card.Img variant="top" src={WebThumbnail} />
-            <Card.Body>
-              <Card.Title>2024 Blockchain Developer</Card.Title>
-              <Link to={"/content"}>
-              <Button variant="primary">Go to the course</Button>
-              </Link>
-              <StarRating />
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col>
-          <Card style={{ width: '20rem', margin: '20px', top: '70px', left: '15px' }}>
-            <Card.Img variant="top" src={FrontendThumbnail} />
-            <Card.Body>
-              <Card.Title>2024 Front-End Developer</Card.Title>
-              <Link to={"/content"}>
-              <Button variant="primary">Go to the course</Button>
-              </Link>
-              <StarRating />
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col>
-          <Card style={{ width: '20rem', margin: '20px', top: '70px', left: '15px' }}>
-            <Card.Img variant="top" src={BackendThumbnail} />
-            <Card.Body>
-              <Card.Title>2024 Back-End Developer</Card.Title>
-              <Link to={"/content"}>
-              <Button variant="primary">Go to the course</Button>
-              </Link>
-              <StarRating />
-            </Card.Body>
-          </Card>
-        </Col>
+        ))}
       </Row>
     </>
   )
