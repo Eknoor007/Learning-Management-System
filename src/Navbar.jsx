@@ -29,7 +29,7 @@ export default function Navbar() {
                                 <li><Link class="dropdown-item" to="#">My Learning</Link></li>
                                 <li><Link class="dropdown-item" to="#">My Wishlist</Link></li>
                                 <li><hr class="dropdown-divider" /></li>
-                                    <li><Link class="dropdown-item" to="/">Sign  Out</Link></li>
+                                <li><Link class="dropdown-item" to="/">Sign  Out</Link></li>
                             </ul>
                         </Col>
                     </Row>
