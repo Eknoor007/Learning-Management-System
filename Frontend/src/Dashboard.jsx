@@ -5,12 +5,6 @@ import style from './CSS Module/Dashboard.module.css'
 import Button from 'react-bootstrap/Button';
 import { Card, Form } from 'react-bootstrap';
 import { Col, Row } from 'react-bootstrap';
-import ReactThumbnail from './assets/React.png'
-import MernThumbnail from './assets/Mern.png'
-import JsThumbnail from './assets/js.png'
-import WebThumbnail from './assets/Web.png'
-import FrontendThumbnail from './assets/Frontend.png'
-import BackendThumbnail from './assets/Backend.png'
 import StarRating from './StarRating.jsx';
 import { Link } from 'react-router-dom';
 

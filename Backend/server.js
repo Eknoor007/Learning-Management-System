@@ -2,22 +2,25 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
-
 const app = express();
 const port = 4000;
 
 let courses = [
-  { id: 1, title: "The Ultimate React Native Guide", image: "https://gdm-catalog-fmapi-prod.imgix.net/ProductScreenshot/a1d055e8-6660-4e04-a94f-9397516c5766.png" },
-  { id: 2, title: "The Ultimate Mern Stack Mastery Guide", image: "https://gdm-catalog-fmapi-prod.imgix.net/ProductScreenshot/a1d055e8-6660-4e04-a94f-9397516c5766.png" },
-  { id: 3, title: "The Ultimate React.js Mastery Guide", image: "https://gdm-catalog-fmapi-prod.imgix.net/ProductScreenshot/a1d055e8-6660-4e04-a94f-9397516c5766.png" },
-  { id: 4, title: "2024 Blockchain Developer", image: "https://gdm-catalog-fmapi-prod.imgix.net/ProductScreenshot/a1d055e8-6660-4e04-a94f-9397516c5766.png" },
-  { id: 5, title: "2024 Front-End Developer", image: "https://gdm-catalog-fmapi-prod.imgix.net/ProductScreenshot/a1d055e8-6660-4e04-a94f-9397516c5766.png" },
-  { id: 6, title: "2024 Back-End Developer", image: "https://gdm-catalog-fmapi-prod.imgix.net/ProductScreenshot/a1d055e8-6660-4e04-a94f-9397516c5766.png" },
+  { id: 1, title: "The Ultimate React Native Guide", image: "http://localhost:4000/assets/React.png" },
+  { id: 2, title: "The Ultimate Mern Stack Mastery Guide", image: "http://localhost:4000/assets/Mern.png" },
+  { id: 3, title: "The Ultimate React.js Mastery Guide", image: "http://localhost:4000/assets/js.png" },
+  { id: 4, title: "2024 Blockchain Developer", image: "http://localhost:4000/assets/Web.png" },
+  { id: 5, title: "2024 Front-End Developer", image: "http://localhost:4000/assets/Frontend.png" },
+  { id: 6, title: "2024 Back-End Developer", image: "http://localhost:4000/assets/Backend.png" },
 ];
 
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+
+// Serve static files from the "assets" directory
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
 // Define the path to the views directory
 const viewsPath = path.join(__dirname, 'views');
