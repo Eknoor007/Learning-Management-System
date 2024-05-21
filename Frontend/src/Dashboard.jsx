@@ -61,7 +61,9 @@ export default function Dashboard() {
               <Link to={"/content"}>
               <Button variant="primary">Go to the course</Button>
               </Link>
-              <StarRating />
+              <div className="p-1">
+              <StarRating/>
+              </div>
             </Card.Body>
           </Card>
         </Col>

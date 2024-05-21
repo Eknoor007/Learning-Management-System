@@ -30,7 +30,7 @@ export default function Pdf() {
 
   return (
     <>
-      <h1 >The Ultimate React Native Guide</h1>
+      <h1 className='mx-4 linear bg-gradient-to-r from-purple-800 via-cyan-600 to-violet-700 inline-block text-transparent bg-clip-text'>The Ultimate React Native Guide</h1>
       <div className={style.pdf} >
         <div style={{ marginTop: '10px', marginBottom: '10px' }}>
           <Document
