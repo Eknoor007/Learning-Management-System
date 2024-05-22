@@ -1,27 +1,30 @@
 import React, { useState } from 'react';
 import Navbar from './Navbar';
 import PdfSidebar from './Sidebar_Options/PdfSidebar';
-import PdfViewer from './PdfViewer'
+import Pdf from './PdfViewer';
 import PptViewer from './PptViewer';
+import Assignment from './Assignment';
+import VideoRender from './VideoRender';
+import Quiz from './Quiz';
 
 export default function Content() {
   const [activeSection, setActiveSection] = useState('pdf');
-  const fileUrl = './assets/React Native Guide Example by me.pdf'
+  const pptUrl = 'https://docs.google.com/presentation/d/1SuLq6RClo80dmQP-iXw9W12OzJJCXSln/embed?start=false&loop=false&delayms=3000 ';
 
   const renderContent = () => {
     switch (activeSection) {
       case 'pdf':
-        return <div><PdfViewer/></div>;
+        return <div><Pdf/></div>;
       case 'ppt':
-        return <div><PptViewer fileUrl={fileUrl}/></div>;
+        return <div><PptViewer url={pptUrl}/></div>;
       case 'assignment':
-        return <div>Assignment Content</div>;
+        return <div><Assignment/></div>;
       case 'videos':
-        return <div>Videos Content</div>;
+        return <div><VideoRender/></div>;
       case 'quizzes':
-        return <div>Quizzes Content</div>;
+        return <div><Quiz/></div>;
       default:
-        return <div> <PdfViewer/> </div>;
+        return <div> <Pdf/> </div>;
     }
   };
 
@@ -29,7 +32,7 @@ export default function Content() {
     <>
       <Navbar />
       <div className="flex">
-        <PdfSidebar setActiveSection={setActiveSection} />
+        <PdfSidebar activeSection={activeSection} setActiveSection={setActiveSection} />
         <div className="flex-grow p-4">
           {renderContent()}
         </div>

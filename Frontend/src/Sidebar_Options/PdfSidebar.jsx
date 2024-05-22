@@ -4,8 +4,7 @@ import { FaFilePdf, FaFilePowerpoint, FaTasks, FaVideo, FaQuestionCircle } from 
 import style from '../CSS Module/Sidebar.module.css'
 
 
-export default function PdfSidebar() {
-  const [activeSection, setActiveSection] = useState('pdf');
+export default function PdfSidebar({activeSection, setActiveSection}) {
 
   const menuItems = [
     { label: 'PDF', icon: <FaFilePdf />, section: 'pdf' },

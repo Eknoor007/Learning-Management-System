@@ -1,18 +1,29 @@
+// src/components/PptViewer.jsx
 import React from 'react';
-import { Worker, Viewer } from '@react-pdf-viewer/core';
-import '@react-pdf-viewer/core/lib/styles/index.css';
-import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
-import '@react-pdf-viewer/default-layout/lib/styles/index.css';
+import PropTypes from 'prop-types';
+import './PptViewer.css';
 
-export default function PptViewer() {
-    const defaultLayoutPluginInstance = defaultLayoutPlugin();
-    const fileUrl = process.env.PUBLIC_URL + '/assets/React Native Guide Example by me.pdf'; 
+const PptViewer = ({ url }) => {
+  return (
+    <>
+    <h1 className='mx-4 linear bg-gradient-to-r from-purple-800 via-cyan-600 to-violet-700 inline-block text-transparent bg-clip-text'>The Ultimate React Native Guide</h1>
+    <hr></hr>
+    <div className="ppt-viewer">
+      <iframe 
+        src={url}
+        width="100%"
+        height="600px"
+        frameBorder="0"
+        title="PowerPoint Viewer"
+        allowFullScreen
+      ></iframe>
+    </div>
+    </>
+  );
+};
 
-    return (
-        <div className="h-screen">
-            <Worker workerUrl={`https://unpkg.com/pdfjs-dist@2.6.347/build/pdf.worker.min.js`}>
-                <Viewer fileUrl={fileUrl} plugins={[defaultLayoutPluginInstance]} />
-            </Worker>
-        </div>
-    );
-}
+PptViewer.propTypes = {
+  url: PropTypes.string.isRequired,
+};
+
+export default PptViewer;
