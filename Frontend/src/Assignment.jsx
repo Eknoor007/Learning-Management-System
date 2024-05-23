@@ -1,27 +1,27 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
 const Assignment = () => {
-  const questions = [
-    'What is the purpose of the useState hook in React Native? Can you provide an example of its usage?',
-    'Can you explain how to use the fetch function to make API calls in React Native?',
-    'What is the difference between props and state in React Native?',
-    'What is the significance of the render method in a React Native component?',
-    'How do you apply styles in React Native?',
-    'How would you handle errors in a React Native application?',
-    'Can you explain how to use the useEffect hook in React Native?'
-  ];
 
+  const [questions, setQuestions] = useState([]);
   const [editorContent, setEditorContent] = useState('');
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState(Array(questions.length).fill(''));
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    fetch('http://localhost:4000/assignments')
+      .then(response => response.json())
+      .then(data => setQuestions(data))
+      .catch(error => console.error('Error fetching assignments:', error));
+  }, []);
 
   const handleEditorChange = (content) => {
     setEditorContent(content);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const newAnswers = [...answers];
     newAnswers[currentQuestionIndex] = editorContent;
@@ -33,9 +33,25 @@ const Assignment = () => {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
       setEditorContent(newAnswers[currentQuestionIndex + 1] || ''); // Load the next answer
     } else {
-      console.log('All questions completed');
+      const response = await fetch('http://localhost:4000/assignments', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ question: questions[currentQuestionIndex].question, answers: newAnswers }),
+      });
+
+      if (response.ok) {
+        alert('Assignment submitted successfully!');
+      } else {
+        alert('Failed to submit assignment.');
+      }
     }
+
+    const completed = newAnswers.filter(answer => answer).length;
+    setProgress((completed / questions.length) * 100);
   };
+
 
   const handlePrevious = () => {
     const newAnswers = [...answers];
@@ -66,7 +82,7 @@ const Assignment = () => {
       <form onSubmit={handleSubmit} className='mx-1'>
         <div className="form-group">
           <label><h4>Question:</h4></label>
-          <p id="question"><h6 className='mx-1'>{questions[currentQuestionIndex]}</h6></p>
+          <p id="question"><h6 className='mx-1'>{questions[currentQuestionIndex]?.question}</h6></p>
         </div>
         <div className="form-group">
           <label htmlFor="answer"><h5>Answer:</h5></label>
@@ -105,6 +121,12 @@ const Assignment = () => {
               <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z" />
             </svg>
           </button>
+        </div>
+        
+        <div className="progress">
+          <div className="progress-bar" role="progressbar" style={{ width: `${progress}%` }} aria-valuenow={progress} aria-valuemin="0" aria-valuemax="100">
+            {progress}%
+          </div>
         </div>
       </form>
     </div>

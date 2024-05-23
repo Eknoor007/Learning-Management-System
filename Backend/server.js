@@ -8,6 +8,8 @@ const port = 4000;
 
 mongoose.connect('mongodb://localhost:27017/lms', { useNewUrlParser: true, useUnifiedTopology: true });
 
+// Defining Schemas
+
 const courseSchema = new mongoose.Schema({
   title: String,
   image: String
@@ -18,8 +20,42 @@ const userSchema = new mongoose.Schema({
   password: String
 });
 
+
+const pdfSchema = new mongoose.Schema({
+  title: String,
+  url: String
+});
+
+const pptSchema = new mongoose.Schema({
+  title: String,
+  url: String
+});
+
+const videoSchema = new mongoose.Schema({
+  title: String,
+  url: String
+});
+
+const questionSchema = new mongoose.Schema({
+  question: String,
+  options: [String],
+  correctOption: Number
+});
+
+const assignmentSchema = new mongoose.Schema({
+  question: String,
+  answers: [String]
+});
+
+//Defining Models
+
 const Course = mongoose.model('Course', courseSchema);
 const User = mongoose.model('User', userSchema);
+const PDF = mongoose.model('PDF', pdfSchema);
+const PPT = mongoose.model('PPT', pptSchema);
+const Video = mongoose.model('Video', videoSchema);
+const Question = mongoose.model('Question', questionSchema);
+const Assignment = mongoose.model('Assignment', assignmentSchema);
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -63,6 +99,7 @@ app.post('/signup', async (req, res) => {
   }
 });
 
+// Course Endpoints
 app.get('/courses', async (req, res) => {
     const courses = await Course.find();
     res.json(courses);
@@ -75,8 +112,42 @@ app.post('/courses', async (req, res) => {
   res.json({ message: 'Course added successfully', course: newCourse });
 });
 
+// Admin Panel Endpoint
 app.get('/adminpanel', (req, res) => {
   res.render('AdminPanel'); // Render the Handlebars template
+});
+
+// Endpoints for PDFs, PPTs, Videos, Assignments, and Quizzes
+app.get('/pdfs', async (req, res) => {
+  const pdfs = await PDF.find();
+  res.json(pdfs);
+});
+
+app.get('/ppts', async (req, res) => {
+  const ppts = await PPT.find();
+  res.json(ppts);
+});
+
+app.get('/videos', async (req, res) => {
+  const videos = await Video.find();
+  res.json(videos);
+});
+
+app.get('/questions', async (req, res) => {
+  const questions = await Question.find();
+  res.json(questions);
+});
+
+app.get('/assignments', async (req, res) => {
+  const assignments = await Assignment.find();
+  res.json(assignments);
+});
+
+app.post('/assignments', async (req, res) => {
+  const { question, answers } = req.body;
+  const newAssignment = new Assignment({ question, answers });
+  await newAssignment.save();
+  res.json({ message: 'Assignment submitted successfully', assignment: newAssignment });
 });
 
 app.listen(port, () => {

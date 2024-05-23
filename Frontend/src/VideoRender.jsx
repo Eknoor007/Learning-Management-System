@@ -1,13 +1,15 @@
-import React from 'react';
-
-// List of YouTube video URLs
-const videoUrls = [
-  'https://www.youtube.com/embed/0-S5a0eXPoc',
-  'https://www.youtube.com/embed/ZBCUegTZF7M',
-  // Add more video URLs here
-];
+import React, { useEffect, useState } from 'react';
 
 const VideoRender = () => {
+  const [videoUrls, setVideoUrls] = useState([]);
+
+  useEffect(() => {
+    fetch('http://localhost:4000/videos')
+      .then(response => response.json())
+      .then(data => setVideoUrls(data.map(video => video.url)))
+      .catch(error => console.error('Error fetching videos:', error));
+  }, []);
+
   return (
     <div className="container mx-auto p-6">
       <h2 className="text-3xl font-bold  text-center text-gradient bg-gradient-to-r from-purple-800 via-cyan-600 to-violet-700 inline-block text-transparent bg-clip-text">

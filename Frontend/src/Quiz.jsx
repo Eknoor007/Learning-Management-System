@@ -1,62 +1,20 @@
-import React, { useState } from 'react';
-
-const questions = [
-  {
-    question: "What is the purpose of the useState hook in React Native?",
-    options: [
-      "To handle side effects in functional components",
-      "To manage state in functional components",
-      "To fetch data from an API",
-      "To handle events in functional components"
-    ],
-    correctOption: 1
-  },
-  {
-    question: "Which method is used to make API calls in React Native?",
-    options: [
-      "axios",
-      "getData",
-      "fetch",
-      "httpRequest"
-    ],
-    correctOption: 2
-  },
-  {
-    question: "What is the difference between props and state in React Native?",
-    options: [
-      "Props are mutable, state is immutable",
-      "State is immutable, props are mutable",
-      "Both props and state are mutable",
-      "Props are immutable, state is mutable"
-    ],
-    correctOption: 3
-  },
-  {
-    question: "How do you apply styles in React Native?",
-    options: [
-      "Using CSS stylesheets",
-      "Using inline styles",
-      "Using the StyleSheet.create method",
-      "Using external CSS files"
-    ],
-    correctOption: 2
-  },
-  {
-    question: "What is the purpose of the useEffect hook in React Native?",
-    options: [
-      "To manage state",
-      "To handle side effects",
-      "To create custom hooks",
-      "To fetch data"
-    ],
-    correctOption: 1
-  }
-];
+import React, { useEffect, useState } from 'react';
 
 const Quiz = () => {
+  const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [selectedOptions, setSelectedOptions] = useState(Array(questions.length).fill(null));
+  const [selectedOptions, setSelectedOptions] = useState([]);
   const [showResults, setShowResults] = useState(false);
+  
+  useEffect(() => {
+    fetch('http://localhost:4000/questions')
+      .then(response => response.json())
+      .then(data => {
+        setQuestions(data);
+        setSelectedOptions(Array(data.length).fill(null));
+      })
+      .catch(error => console.error('Error fetching questions:', error));
+  }, []);
 
   const handleOptionChange = (optionIndex) => {
     const newSelectedOptions = [...selectedOptions];
@@ -117,25 +75,29 @@ const Quiz = () => {
         </div>
       ) : (
         <div>
-          <div className="mb-6">
-            <h4 className="text-xl font-semibold mb-4">{questions[currentQuestionIndex].question}</h4>
-            <div className="space-y-2">
-              {questions[currentQuestionIndex].options.map((option, index) => (
-                <div key={index} className="flex items-center">
-                  <input
-                    type="checkbox"
-                    id={`option-${currentQuestionIndex}-${index}`}
-                    name={`option-${currentQuestionIndex}`}
-                    value={index}
-                    checked={selectedOptions[currentQuestionIndex] === index}
-                    onChange={() => handleOptionChange(index)}
-                    className="mr-2"
-                  />
-                  <label htmlFor={`option-${currentQuestionIndex}-${index}`}>{option}</label>
-                </div>
-              ))}
+          {questions.length > 0 ? (
+            <div className="mb-6">
+              <h4 className="text-xl font-semibold mb-4">{questions[currentQuestionIndex].question}</h4>
+              <div className="space-y-2">
+                {questions[currentQuestionIndex].options.map((option, index) => (
+                  <div key={index} className="flex items-center">
+                    <input
+                      type="checkbox"
+                      id={`option-${currentQuestionIndex}-${index}`}  
+                      name={`option-${currentQuestionIndex}`}
+                      value={index}
+                      checked={selectedOptions[currentQuestionIndex] === index}
+                      onChange={() => handleOptionChange(index)}
+                      className="mr-2"
+                    />
+                    <label htmlFor={`option-${currentQuestionIndex}-${index}`}>{option}</label>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          ) : (
+            <p>Loading questions...</p>
+          )}
           <hr></hr>
           <div className="flex justify-between">
             <button
