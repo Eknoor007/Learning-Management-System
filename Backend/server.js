@@ -2,17 +2,24 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
+const mongoose = require('mongoose');
 const app = express();
 const port = 4000;
 
-let courses = [
-  { id: 1, title: "The Ultimate React Native Guide", image: "http://localhost:4000/assets/React.png" },
-  { id: 2, title: "The Ultimate Mern Stack Mastery Guide", image: "http://localhost:4000/assets/Mern.png" },
-  { id: 3, title: "The Ultimate React.js Mastery Guide", image: "http://localhost:4000/assets/js.png" },
-  { id: 4, title: "2024 Blockchain Developer", image: "http://localhost:4000/assets/Web.png" },
-  { id: 5, title: "2024 Front-End Developer", image: "http://localhost:4000/assets/Frontend.png" },
-  { id: 6, title: "2024 Back-End Developer", image: "http://localhost:4000/assets/Backend.png" },
-];
+mongoose.connect('mongodb://localhost:27017/lms', { useNewUrlParser: true, useUnifiedTopology: true });
+
+const courseSchema = new mongoose.Schema({
+  title: String,
+  image: String
+});
+
+const userSchema = new mongoose.Schema({
+  email: String,
+  password: String
+});
+
+const Course = mongoose.model('Course', courseSchema);
+const User = mongoose.model('User', userSchema);
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -29,32 +36,42 @@ const viewsPath = path.join(__dirname, 'views');
 app.set('view engine', 'hbs');
 app.set('views', viewsPath);
 
-app.post('/login', (req, res) => {
+app.post('/login', async (req, res) => {
     const { email, password } = req.body;
+    const user = await User.findOne({ email, password });
 
-    // Hardcoded credentials for demonstration purposes
-    const hardcodedEmail = 'user@example.com';
-    const hardcodedPassword = 'password';
-
-    if (email === hardcodedEmail && password === hardcodedPassword) {
-        res.json({ message: 'Login successful!' });
-    } else {
-        res.status(401).json({ message: 'Invalid email or password' });
-    }
+    if (user) {
+      res.json({ message: 'Login successful!' });
+  } else {
+      res.status(401).json({ message: 'Invalid email or password' });
+  }
 });
 
-app.get('/courses', (req, res) => {
-  res.json(courses);
+app.post('/signup', async (req, res) => {
+  const { email, password } = req.body;
+  try {
+      const existingUser = await User.findOne({ email });
+      if (existingUser) {
+          return res.status(400).json({ message: 'User already exists' });
+      }
+
+      const newUser = new User({ email, password });
+      await newUser.save();
+      res.json({ message: 'Sign-up successful!' });
+  } catch (error) {
+      res.status(500).json({ message: 'An error occurred. Please try again later.' });
+  }
 });
 
-app.post('/courses', (req, res) => {
+app.get('/courses', async (req, res) => {
+    const courses = await Course.find();
+    res.json(courses);
+});
+
+app.post('/courses', async (req, res) => {  
   const { title, image } = req.body;
-  const newCourse = {
-      id: courses.length + 1,
-      title,
-      image
-  };
-  courses.push(newCourse);
+  const newCourse = new Course({ title, image });
+  await newCourse.save();
   res.json({ message: 'Course added successfully', course: newCourse });
 });
 

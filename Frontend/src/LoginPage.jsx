@@ -54,7 +54,7 @@ export default function LoginPage() {
                   {error && <p style={{ color: 'red' }}>{error}</p>}
                   <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>Email address:</Form.Label>
-                    <Form.Control type="email" value={email} placeholder="Enter email" onChange={(e) => {
+                    <Form.Control type="email" name='email' id='email' value={email} placeholder="Enter email" onChange={(e) => {
                       console.log(e.target.value)
                       setEmail(e.target.value)
                     }} />
@@ -65,7 +65,7 @@ export default function LoginPage() {
 
                   <Form.Group className="mb-3" controlId="formBasicPassword">
                     <Form.Label>Password:</Form.Label>
-                    <Form.Control type="password" value={password} placeholder="Password" onChange={(e) => {
+                    <Form.Control type="password" name='password' id='password' value={password} placeholder="Password" onChange={(e) => {
                       console.log(e.target.value)
                       setPassword(e.target.value)
                     }} />
