@@ -49,7 +49,7 @@ const Assignment = () => {
     }
 
     const completed = newAnswers.filter(answer => answer).length;
-    setProgress((completed / questions.length) * 100);
+    setProgress((completed / questions.length * 100).toFixed(1));
   };
 
 

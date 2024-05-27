@@ -11,7 +11,7 @@ export default function PdfSidebar({activeSection, setActiveSection}) {
     { label: 'PPT', icon: <FaFilePowerpoint />, section: 'ppt' },
     { label: 'Assignment', icon: <FaTasks />, section: 'assignment' },
     { label: 'Videos', icon: <FaVideo />, section: 'videos' },
-    { label: 'Quizzes', icon: <FaQuestionCircle />, section: 'quizzes' },
+    { label: 'Quiz', icon: <FaQuestionCircle />, section: 'quizzes' },
   ];
 
   return (

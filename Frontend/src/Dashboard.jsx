@@ -12,6 +12,7 @@ export default function Dashboard() {
 
   const [searchTerm, setSearchTerm] = useState('');
   const [courses, setCourses] = useState([]);
+  const [errorMessage, setErrorMessage] = useState('');
 
   
   useEffect(() => {
@@ -23,11 +24,21 @@ export default function Dashboard() {
   
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
+    setErrorMessage('');
   };
   
   const filteredCourses = courses.filter(course =>
     course.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  useEffect(() => {
+    if (filteredCourses.length === 0 && searchTerm !== '') {
+      setErrorMessage('No courses found.');
+    } else {
+      setErrorMessage('');
+    }
+  }, [filteredCourses, searchTerm]);
+
 
   return (
     <>
@@ -44,12 +55,17 @@ export default function Dashboard() {
             onChange={handleSearch}
           />
         </Form>
-      </div>
+      </div> 
 
       <center>
         <h1 className='mt-4'> Popular  Courses </h1>
       </center>
       <hr></hr>
+      {errorMessage && (
+        <div className="text-red-500 text-center mt-4">
+          {errorMessage}
+        </div>
+      )}
       <Row>
         {filteredCourses.map((courses, index) => (
           <Col key={index}>
